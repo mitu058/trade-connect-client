@@ -2,12 +2,13 @@ import { useContext, useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { AuthContext } from "../providers/AuthProvider";
+import axios from "axios";
 
 const AddJob = () => {
   const [startDate, setStartDate] = useState(new Date());
   const { user } = useContext(AuthContext);
 
-  const handelSubmit = (e) => {
+  const handelSubmit = async (e) => {
     e.preventDefault();
     // handle form submission here
     const form = e.target;
@@ -20,18 +21,24 @@ const AddJob = () => {
 
     const formData = {
       title,
-      byuer:{
+      byuer: {
         email,
         name: user?.displayName,
-        photo:user?.photoURL
+        photo: user?.photoURL,
       },
       category,
       min_price,
       max_price,
       description,
+      bid_count : 0
     };
-    console.log('form data',formData)
-    
+    // console.log("form data", formData);
+    //  make a post request
+    const { data } = await axios.post(
+      `${import.meta.env.VITE_API_URL}/add-job`,
+      formData
+    );
+    console.log(data);
   };
 
   return (
