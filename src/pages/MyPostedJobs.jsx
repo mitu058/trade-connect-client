@@ -21,15 +21,47 @@ const MyPostedJobs = () => {
   // delete jobs
   const handelDelete = async (id) => {
     try {
-     const {data} = await axios.delete(`${import.meta.env.VITE_API_URL}/job/${id}`);
-    
+      const { data } = await axios.delete(
+        `${import.meta.env.VITE_API_URL}/job/${id}`
+      );
+
       // setJobs(jobs.filter((job) => job._id!== id));
-      console.log(data)
+      console.log(data);
       toast.success("Job deleted successfully");
       fetchAllJobs();
     } catch (err) {
       toast.error(err.message);
     }
+  };
+
+  const optionDelete = (id) => {
+    toast((t) => (
+      <div className="flex gap-3 items-center">
+        <div>
+          <p>
+            Are You <b>Sure?</b>
+          </p>
+        </div>
+        <div className="flex gap-2">
+          <button
+            className="bg-red-400 text-white px-3 py-1 rounded-md"
+            onClick={() => {
+              toast.dismiss(t.id);
+              handelDelete(id);
+              // toast.dismiss(t.id);
+            }}
+          >
+            Delete
+          </button>
+          <button
+            className="bg-blue-400 text-white px-3 py-1 rounded-md"
+            onClick={() => toast.dismiss(t.id)}
+          >
+            Cancle
+          </button>
+        </div>
+      </div>
+    ));
   };
 
   return (
@@ -110,7 +142,17 @@ const MyPostedJobs = () => {
                       <td className="px-4 py-4 text-sm whitespace-nowrap">
                         <div className="flex items-center gap-x-2">
                           <p
-                            className={`px-3 py-1  text-blue-500 bg-blue-100/60 text-xs  rounded-full`}
+                            className={`px-3 py-1 ${
+                              job.category === "Web Development" &&
+                              "text-blue-500 bg-blue-100/60 "
+                            } ${
+                              job.category === "Graphics Design" &&
+                              "text-green-500 bg-green-100/60 "
+                            } ${
+                              job.category === "Digital Marketing" &&
+                              "text-pink-500 bg-pink-100/60 "
+                            }
+                             text-xs  rounded-full`}
                           >
                             {job.category}
                           </p>
@@ -122,7 +164,7 @@ const MyPostedJobs = () => {
                       <td className="px-4 py-4 text-sm whitespace-nowrap">
                         <div className="flex items-center gap-x-6">
                           <button
-                            onClick={() => handelDelete(job._id)}
+                            onClick={() => optionDelete(job._id)}
                             className="text-gray-500 transition-colors duration-200   hover:text-red-500 focus:outline-none"
                           >
                             <svg
