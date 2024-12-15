@@ -17,6 +17,7 @@ const AddJob = () => {
     const form = e.target;
     const title = form.job_title.value;
     const email = form.email.value;
+    const deadline = startDate;
     const category = form.category.value;
     const min_price = parseFloat(form.min_price.value);
     const max_price = parseFloat(form.max_price.value);
@@ -24,7 +25,7 @@ const AddJob = () => {
 
     const formData = {
       title,
-      byuer: {
+      buyer: {
         email,
         name: user?.displayName,
         photo: user?.photoURL,
@@ -32,6 +33,7 @@ const AddJob = () => {
       category,
       min_price,
       max_price,
+      deadline,
       description,
       bid_count : 0
     };
